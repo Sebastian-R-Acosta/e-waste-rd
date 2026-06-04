@@ -49,37 +49,34 @@ export default function QueReciclamos() {
           {items.map((item, i) => {
             const Icon = item.icon
             return (
-              <motion.div
+              <motion.a
                 key={item.label}
+                href={item.href}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover"
               >
-                <a
-                  href={item.href}
-                  className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover"
-                >
-                  <div className="absolute top-0 right-0 p-3 font-mono text-[10px] text-muted">
-                    [{item.count}]
-                  </div>
+                <div className="absolute top-0 right-0 p-3 font-mono text-[10px] text-muted">
+                  [{item.count}]
+                </div>
 
-                  <div className="p-5">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent/20">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mb-1 text-base font-semibold text-foreground">{item.label}</h3>
-                    <p className="text-sm text-muted">{item.desc}</p>
+                <div className="p-5">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent/20">
+                    <Icon className="h-5 w-5" />
                   </div>
+                  <h3 className="mb-1 text-base font-semibold text-foreground">{item.label}</h3>
+                  <p className="text-sm text-muted">{item.desc}</p>
+                </div>
 
-                  <div className="border-t border-border px-5 py-2">
-                    <div className="flex items-center gap-2">
-                      <span className="status-dot active" />
-                      <span className="font-mono text-[10px] text-muted">aceptando</span>
-                    </div>
+                <div className="border-t border-border px-5 py-2">
+                  <div className="flex items-center gap-2">
+                    <span className="status-dot active" />
+                    <span className="font-mono text-[10px] text-muted">aceptando</span>
                   </div>
-                </a>
-              </motion.div>
+                </div>
+              </motion.a>
             )
           })}
         </div>
