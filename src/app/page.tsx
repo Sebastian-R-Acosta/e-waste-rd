@@ -4,6 +4,7 @@ import { useState } from "react"
 import dynamic from "next/dynamic"
 import Navbar from "@/components/Navbar"
 import Hero from "@/components/Hero"
+import QuienesSomos from "@/components/QuienesSomos"
 import QueReciclamos from "@/components/QueReciclamos"
 import ParaQueSirve from "@/components/ParaQueSirve"
 import Footer from "@/components/Footer"
@@ -26,6 +27,7 @@ export default function Home() {
       <Navbar onOpenAuth={() => setAuthOpen(true)} />
       <main className="flex-1">
         <Hero />
+        <QuienesSomos />
         <QueReciclamos />
         <MapaSection />
         <ParaQueSirve />

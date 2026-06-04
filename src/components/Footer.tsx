@@ -29,6 +29,7 @@ export default function Footer() {
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-foreground">Secciones</h4>
             <ul className="space-y-2 text-sm text-muted">
               <li><a href="#hero" className="transition-colors hover:text-accent">Inicio</a></li>
+              <li><a href="#quienes-somos" className="transition-colors hover:text-accent">Nosotros</a></li>
               <li><a href="#que-reciclamos" className="transition-colors hover:text-accent">Qué Reciclamos</a></li>
               <li><a href="#mapa" className="transition-colors hover:text-accent">Puntos de Recolección</a></li>
               <li><a href="#para-que-sirve" className="transition-colors hover:text-accent">Beneficios</a></li>

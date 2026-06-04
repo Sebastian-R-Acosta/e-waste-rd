@@ -7,6 +7,7 @@ import { useTheme } from "next-themes"
 
 const navLinks = [
   { label: "Inicio", href: "#hero" },
+  { label: "Nosotros", href: "#quienes-somos" },
   { label: "Qué Reciclamos", href: "#que-reciclamos" },
   { label: "Puntos", href: "#mapa" },
   { label: "Beneficios", href: "#para-que-sirve" },
