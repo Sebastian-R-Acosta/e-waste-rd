@@ -5,7 +5,7 @@ import { MapPin } from "lucide-react"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import L from "leaflet"
 
-const UNPHU_COORDS: [number, number] = [18.4731, -69.8918]
+const UNPHU_COORDS: [number, number] = [18.486, -69.949]
 
 const markerIcon = L.divIcon({
   className: "",
