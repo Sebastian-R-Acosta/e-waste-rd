@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Recycle } from "lucide-react"
+import { X, Recycle, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/AuthProvider"
 
@@ -79,7 +79,7 @@ function TabbedForm() {
             "flex-1 rounded-md px-3 py-2 text-xs font-semibold transition-all",
             tab === "login"
               ? "bg-accent text-black shadow-sm"
-              : "text-muted hover:text-foreground"
+              : "text-muted hover:text-foreground",
           )}
         >
           Iniciar Sesión
@@ -90,7 +90,7 @@ function TabbedForm() {
             "flex-1 rounded-md px-3 py-2 text-xs font-semibold transition-all",
             tab === "register"
               ? "bg-accent text-black shadow-sm"
-              : "text-muted hover:text-foreground"
+              : "text-muted hover:text-foreground",
           )}
         >
           Registrarse
@@ -105,35 +105,57 @@ function TabbedForm() {
 }
 
 function LoginForm() {
+  const { login, authLoading, authError } = useAuth()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await login(email, password)
+  }
+
   return (
     <motion.form
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleSubmit}
       className="flex flex-col gap-4"
     >
+      {authError && (
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">
+          {authError}
+        </div>
+      )}
       <div>
         <label className="mb-1.5 block text-xs font-medium text-foreground">Correo electrónico</label>
         <input
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="tucorreo@ejemplo.com"
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-accent transition-all"
+          required
         />
       </div>
       <div>
         <label className="mb-1.5 block text-xs font-medium text-foreground">Contraseña</label>
         <input
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-accent transition-all"
+          required
         />
       </div>
       <button
         type="submit"
-        className="mt-1 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover"
+        disabled={authLoading}
+        className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
-        Iniciar Sesión
+        {authLoading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+        {authLoading ? "Ingresando..." : "Iniciar Sesión"}
       </button>
       <p className="text-center text-xs text-muted">
         ¿Olvidaste tu contraseña?{" "}
@@ -144,43 +166,69 @@ function LoginForm() {
 }
 
 function RegisterForm() {
+  const { register, authLoading, authError } = useAuth()
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await register(name, email, password)
+  }
+
   return (
     <motion.form
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleSubmit}
       className="flex flex-col gap-4"
     >
+      {authError && (
+        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">
+          {authError}
+        </div>
+      )}
       <div>
         <label className="mb-1.5 block text-xs font-medium text-foreground">Nombre completo</label>
         <input
           type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder="Juan Pérez"
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-accent transition-all"
+          required
         />
       </div>
       <div>
         <label className="mb-1.5 block text-xs font-medium text-foreground">Correo electrónico</label>
         <input
           type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="tucorreo@ejemplo.com"
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-accent transition-all"
+          required
         />
       </div>
       <div>
         <label className="mb-1.5 block text-xs font-medium text-foreground">Contraseña</label>
         <input
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
           className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-1 focus:ring-accent transition-all"
+          required
         />
       </div>
       <button
         type="submit"
-        className="mt-1 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover"
+        disabled={authLoading}
+        className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
-        Crear Cuenta
+        {authLoading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+        {authLoading ? "Creando cuenta..." : "Crear Cuenta"}
       </button>
       <p className="text-center text-xs text-muted">
         Al registrarte aceptas nuestros{" "}

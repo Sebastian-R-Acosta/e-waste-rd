@@ -4,22 +4,25 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Recycle, Moon, Sun } from "lucide-react"
+import { Menu, X, Recycle, Moon, Sun, LogOut, User } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAuth } from "@/components/AuthProvider"
+import PointsBadge from "@/components/PointsBadge"
 
 const navLinks = [
   { label: "Inicio", href: "/" },
   { label: "Nosotros", href: "/quienes-somos" },
   { label: "Qué Reciclamos", href: "/que-reciclamos" },
   { label: "Puntos", href: "/mapa" },
+  { label: "Reciclar", href: "/solicitar" },
   { label: "Beneficios", href: "/beneficios" },
 ]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
-  const { setAuthOpen } = useAuth()
+  const { user, setAuthOpen, logout } = useAuth()
   const pathname = usePathname()
   const resolvedTheme = theme ?? "dark"
 
@@ -67,19 +70,66 @@ export default function Navbar() {
           >
             {resolvedTheme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
           </button>
-          <div className="h-5 w-px bg-border" />
-          <button
-            onClick={() => setAuthOpen(true)}
-            className="rounded-lg bg-accent px-3.5 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover"
-          >
-            Iniciar Sesión
-          </button>
-          <button
-            onClick={() => setAuthOpen(true)}
-            className="rounded-lg border border-border px-3.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface"
-          >
-            Registrarse
-          </button>
+
+          {user ? (
+            <>
+              <PointsBadge />
+              <div className="h-5 w-px bg-border" />
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-foreground"
+                >
+                  <User className="h-3.5 w-3.5" />
+                </button>
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="absolute right-0 mt-2 w-48 rounded-lg border border-border bg-surface p-1 shadow-lg"
+                    >
+                      <div className="border-b border-border px-3 py-2">
+                        <p className="truncate text-xs font-medium text-foreground">{user.name}</p>
+                        <p className="truncate text-[10px] text-muted">{user.email}</p>
+                      </div>
+                      <Link
+                        href="/perfil"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-md px-3 py-1.5 text-xs text-muted transition-colors hover:bg-background hover:text-foreground"
+                      >
+                        <User className="h-3 w-3" />
+                        Mi Perfil
+                      </Link>
+                      <button
+                        onClick={() => { logout(); setUserMenuOpen(false) }}
+                        className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs text-muted transition-colors hover:bg-background hover:text-red-400"
+                      >
+                        <LogOut className="h-3 w-3" />
+                        Cerrar Sesión
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setAuthOpen(true)}
+                className="rounded-lg bg-accent px-3.5 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-accent-hover"
+              >
+                Iniciar Sesión
+              </button>
+              <button
+                onClick={() => setAuthOpen(true)}
+                className="rounded-lg border border-border px-3.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface"
+              >
+                Registrarse
+              </button>
+            </>
+          )}
         </div>
 
         <button
@@ -127,18 +177,40 @@ export default function Navbar() {
                 </button>
                 <span className="font-mono text-xs text-muted">v0.1.0</span>
               </div>
-              <button
-                onClick={() => { setAuthOpen(true); setMobileOpen(false) }}
-                className="mt-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-accent-hover"
-              >
-                Iniciar Sesión
-              </button>
-              <button
-                onClick={() => { setAuthOpen(true); setMobileOpen(false) }}
-                className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
-              >
-                Registrarse
-              </button>
+              {user ? (
+                <>
+                  <Link
+                    href="/perfil"
+                    onClick={() => setMobileOpen(false)}
+                    className="mt-2 flex items-center gap-2 rounded-lg bg-accent/10 px-4 py-2 text-sm font-semibold text-accent"
+                  >
+                    <User className="h-4 w-4" />
+                    Mi Perfil — {user.points?.toLocaleString()} pts
+                  </Link>
+                  <button
+                    onClick={() => { logout(); setMobileOpen(false) }}
+                    className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-surface hover:text-red-400"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Cerrar Sesión
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setAuthOpen(true); setMobileOpen(false) }}
+                    className="mt-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-accent-hover"
+                  >
+                    Iniciar Sesión
+                  </button>
+                  <button
+                    onClick={() => { setAuthOpen(true); setMobileOpen(false) }}
+                    className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                  >
+                    Registrarse
+                  </button>
+                </>
+              )}
             </div>
           </motion.div>
         )}

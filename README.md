@@ -6,11 +6,18 @@ A web platform that promotes the responsible recycling of electronic waste (e-wa
 
 ## Features
 
-- **Collection Point Map** — Interactive map showing e-waste collection locations (powered by OpenStreetMap)
-- **Educational** — Information on what e-waste is and why proper recycling matters
+- **Device Type Catalog** — 10 categories of recyclable e-waste with detailed info per type (materials, impact, process, fun facts)
+- **Dynamic Detail Pages** — Individual pages for each device type (`/que-reciclamos/[tipo]`) with animated icons, material recovery charts, environmental impact metrics, and step-by-step recycling process
+- **Collection Point Map** — Interactive map showing e-waste collection locations (powered by OpenStreetMap + Leaflet)
+- **Authentication** — Full login/registration with JWT (jose) + bcrypt password hashing
+- **Points & Level System** — Gamified recycling: earn points per drop-off, level up (Bronze/Silver/Gold), bonus multipliers for 5th/10th deliveries
+- **Rewards Catalog** — Redeem points for discounts, donations, and certificates
+- **Digital Certificates** — Generate verifiable impact certificates with SHA-256 hashes
+- **User Profile** — Personal stats dashboard with level progress, CO₂ savings, activity history
+- **Points Calculator** — Real-time points estimation when scheduling a drop-off
+- **Educational** — Information on what e-waste is, why proper recycling matters, and device-specific recycling processes
 - **Impact Stats** — Visual data on the environmental and social impact of e-waste
-- **Authentication** — Login and registration modal (UI only, ready for backend integration)
-- **Dark Mode** — Palantir-inspired dark theme with smooth animations
+- **Dark Mode** — Palantir-inspired dark theme with smooth animations (next-themes)
 
 ## Tech Stack
 
@@ -22,6 +29,8 @@ A web platform that promotes the responsible recycling of electronic waste (e-wa
 | Animations     | [Framer Motion](https://www.framer.com/motion/)  |
 | Map            | [Leaflet](https://leafletjs.com/) + OpenStreetMap |
 | Icons          | [Lucide React](https://lucide.dev/)              |
+| Database       | SQLite via [Prisma](https://prisma.io/) + libSQL |
+| Auth           | JWT ([jose](https://github.com/panva/jose)) + bcryptjs |
 | Dark Mode      | [next-themes](https://github.com/pacocoursey/next-themes) |
 
 ## Getting Started
@@ -42,31 +51,92 @@ npm run dev
 
 The development server will start at [http://localhost:3000](http://localhost:3000).
 
+### Database Setup
+
+```bash
+npx prisma db push
+npx prisma db seed
+```
+
 ## Project Structure
 
 ```
 e-waste-rd/
-├── public/                  # Static assets
+├── prisma/
+│   ├── schema.prisma      # Database schema (User, DropOff, Reward, etc.)
+│   ├── seed.ts            # Seed rewards data
+│   └── dev.db             # SQLite database
+├── public/                # Static assets
 ├── src/
 │   ├── app/
-│   │   ├── globals.css      # Global styles + Tailwind config
-│   │   ├── layout.tsx       # Root layout with ThemeProvider
-│   │   └── page.tsx         # Landing page composition
+│   │   ├── globals.css    # Global styles + Tailwind config
+│   │   ├── layout.tsx     # Root layout with ThemeProvider + AuthProvider
+│   │   ├── page.tsx       # Landing page (Hero)
+│   │   ├── api/           # API routes (auth, drop-offs, points, rewards, certificates, user)
+│   │   ├── beneficios/    # Benefits page
+│   │   ├── certificados/  # Digital certificates page
+│   │   ├── mapa/          # Interactive map page
+│   │   ├── perfil/        # User profile/dashboard page
+│   │   ├── que-reciclamos/# Device catalog + [tipo]/ detail pages
+│   │   ├── quienes-somos/ # About us page
+│   │   ├── recompensas/   # Rewards catalog page
+│   │   └── solicitar/     # Schedule a drop-off page
 │   ├── components/
-│   │   ├── Navbar.tsx       # Navigation bar with theme toggle
+│   │   ├── Navbar.tsx       # Navigation bar with auth state
 │   │   ├── Hero.tsx         # Full-screen hero with battery animation
-│   │   ├── QueReciclamos.tsx # What we recycle section
+│   │   ├── QueReciclamos.tsx # Device type catalog cards
 │   │   ├── MapaSection.tsx  # Interactive map with UNPHU marker
 │   │   ├── ParaQueSirve.tsx # Benefits and stats
+│   │   ├── QuienesSomos.tsx # About us section
 │   │   ├── AuthModal.tsx    # Login/Register modal
+│   │   ├── AuthProvider.tsx # Auth context provider
+│   │   ├── PointsBadge.tsx  # Navbar points display
 │   │   ├── Footer.tsx       # Site footer
 │   │   └── ThemeProvider.tsx # Next-themes wrapper
-│   └── lib/
-│       └── utils.ts         # cn() utility
+│   ├── lib/
+│   │   ├── auth.ts          # JWT verification utilities
+│   │   ├── device-types.ts  # 10 device types catalog data
+│   │   ├── points.ts        # Points calculation engine
+│   │   ├── prisma.ts        # Prisma client singleton
+│   │   ├── types.ts         # TypeScript interfaces
+│   │   └── utils.ts         # cn() utility
+│   └── generated/prisma/    # Generated Prisma client
 ├── package.json
 ├── tsconfig.json
 └── next.config.ts
 ```
+
+## Device Types
+
+| #  | ID               | Icon       | Materials                          |
+| -- | ---------------- | ---------- | ---------------------------------- |
+| 04 | Baterías         | Battery    | Litio, Cobalto, Níquel, Grafito    |
+| 12 | Celulares        | Smartphone | Oro, Plata, Cobre, Paladio         |
+| 08 | Monitores        | Monitor    | Vidrio, Estaño, Plomo, Plástico    |
+| 16 | Computadoras     | Cpu        | Aluminio, Cobre, Acero, Oro        |
+| 24 | Cables           | Cable      | Cobre, Aluminio, PVC, Conectores   |
+| 06 | Electrodomésticos| Tv         | Acero, Cobre, Plásticos, Vidrio    |
+| 07 | Impresoras       | Printer    | ABS, Aluminio, Acero, Circuitos    |
+| 09 | Tablets          | TabletIcon | Aluminio, Vidrio, Oro, Metales     |
+| 05 | Televisores      | TvIcon     | Vidrio, Plásticos, Aluminio, Cobre |
+| 03 | Consolas         | Gamepad2   | ABS, Cobre, Aluminio, Metales      |
+
+## API Endpoints
+
+| Endpoint                | Method | Auth | Description                    |
+| ----------------------- | ------ | ---- | ------------------------------ |
+| `/api/auth/register`    | POST   | No   | Create new user account        |
+| `/api/auth/login`       | POST   | No   | Authenticate & get JWT token   |
+| `/api/drop-offs`        | POST   | Yes  | Register a new drop-off        |
+| `/api/drop-offs`        | GET    | Yes  | List user's drop-offs          |
+| `/api/points/balance`   | GET    | Yes  | Get points, level & progress   |
+| `/api/points/history`   | GET    | Yes  | Paginated transaction history  |
+| `/api/rewards`          | GET    | No   | List active rewards            |
+| `/api/rewards/redeem`   | POST   | Yes  | Redeem points for a reward     |
+| `/api/rewards/seed`     | POST   | No   | Seed default rewards           |
+| `/api/certificates`     | GET    | Yes  | List user's certificates       |
+| `/api/certificates/generate` | POST | Yes | Generate impact certificate    |
+| `/api/user/stats`       | GET    | Yes  | Get aggregate user stats       |
 
 ## Roadmap
 
@@ -74,19 +144,25 @@ e-waste-rd/
 - [x] Landing page with Palantir-inspired design
 - [x] Battery/recycling animation
 - [x] Interactive map with UNPHU collection point
-- [x] Login/Register modal
-- [ ] Backend API (Next.js API Routes)
-- [ ] Database with PostgreSQL + Prisma
+- [x] Login/Register with JWT authentication
+- [x] Device type catalog with 10 categories
+- [x] Dynamic detail pages for each device type
+- [x] Points and level system
+- [x] Rewards catalog with redemption
+- [x] Digital impact certificates
+- [x] User profile dashboard
+- [x] Drop-off scheduling with points calculator
+- [x] Database with SQLite + Prisma
 
 ### Phase 2 — Expansion
-- [ ] User registration and profiles
 - [ ] Multiple collection points across RD
 - [ ] Educational resources section
+- [ ] Email notifications
 
 ### Phase 3 — Corporate
 - [ ] Recycling traceability system
-- [ ] Digital certificates for organizations
 - [ ] Partnership portal for recyclers
+- [ ] Corporate certificates
 
 ## Contributing
 

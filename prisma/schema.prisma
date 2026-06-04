@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  points    Int      @default(0)
+  level     String   @default("bronze")
+  totalKg   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dropOffs         DropOff[]
+  transactions     PointsTransaction[]
+  redemptions      Redemption[]
+  certificates     Certificate[]
+}
+
+model DropOff {
+  id        String   @id @default(cuid())
+  userId    String
+  deviceType String
+  weightKg  Float
+  pointsAwarded Int  @default(0)
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model PointsTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   @default("earn")
+  amount    Int
+  balanceAfter Int
+  reference String?
+  note      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Reward {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  type        String   @default("discount")
+  cost        Int
+  partner     String?
+  discountPercent Int?
+  imageUrl    String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id        String   @id @default(cuid())
+  userId    String
+  rewardId   String
+  pointsSpent Int
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  reward Reward @relation(fields: [rewardId], references: [id])
+}
+
+model Certificate {
+  id        String   @id @default(cuid())
+  userId    String
+  totalPoints Int
+  totalKg   Float
+  co2Saved  Float
+  hash      String   @unique
+  type      String   @default("impact")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
