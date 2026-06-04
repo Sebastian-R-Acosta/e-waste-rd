@@ -8,10 +8,14 @@
   --color-foreground: var(--foreground);
   --color-accent: #22c55e;
   --color-accent-hover: #16a34a;
-  --color-surface: #141414;
-  --color-surface-hover: #1e1e1e;
-  --color-border: #232323;
-  --color-muted: #a1a1aa;
+  --color-accent-dim: #22c55e20;
+  --color-surface: #111111;
+  --color-surface-hover: #1a1a1a;
+  --color-surface-elevated: #1c1c1c;
+  --color-border: #1f1f1f;
+  --color-border-light: #2a2a2a;
+  --color-muted: #888;
+  --color-muted-bright: #a1a1aa;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -22,13 +26,13 @@
 }
 
 :root.dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
+  --background: #050505;
+  --foreground: #ededed;
 }
 
 .dark body {
-  background: #0a0a0a;
-  color: #fafafa;
+  background: #050505;
+  color: #ededed;
 }
 
 body {
@@ -37,46 +41,18 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-.leaflet-container {
-  border-radius: 0.75rem;
-}
-
-.dark .leaflet-container {
-  background: #1a1a1a;
-}
-
-.dark .leaflet-control-zoom a {
-  background: #141414;
-  color: #fafafa;
-  border-color: #232323;
-}
-
-.dark .leaflet-control-attribution {
-  background: #141414;
-  color: #a1a1aa;
-}
-
-.dark .leaflet-control-attribution a {
-  color: #22c55e;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-.bg-glow {
-  background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+::selection {
+  background: #22c55e40;
+  color: #fff;
 }
 
 *::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 *::-webkit-scrollbar-track {
@@ -84,6 +60,184 @@ html {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #232323;
-  border-radius: 3px;
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
+
+/* ─── Palantir Grid ─── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-grid-dense {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.06) 0%, transparent 60%);
+}
+
+.bg-glow-accent {
+  background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.08) 0%, transparent 50%);
+}
+
+/* ─── Data Panel ─── */
+.data-panel {
+  @apply rounded-lg border border-border bg-surface;
+}
+
+.data-panel-elevated {
+  @apply rounded-lg border border-border-light bg-surface-elevated;
+}
+
+.data-panel-header {
+  @apply flex items-center justify-between border-b border-border px-5 py-3;
+}
+
+.data-panel-body {
+  @apply p-5;
+}
+
+.data-label {
+  @apply text-xs font-medium uppercase tracking-widest text-muted;
+}
+
+.data-value {
+  @apply font-mono text-lg font-bold text-foreground;
+}
+
+.data-value-accent {
+  @apply font-mono text-lg font-bold text-accent;
+}
+
+/* ─── Terminal ─── */
+.terminal-line {
+  @apply flex items-center gap-2 font-mono text-xs;
+}
+
+.terminal-prompt {
+  @apply text-accent;
+}
+
+.terminal-text {
+  @apply text-muted-bright;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  background: #22c55e;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ─── Metric Card ─── */
+.metric-card {
+  @apply data-panel relative overflow-hidden;
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+  opacity: 0.5;
+}
+
+.metric-value {
+  @apply font-mono text-3xl font-bold tracking-tight text-foreground;
+}
+
+.metric-label {
+  @apply text-xs font-medium uppercase tracking-widest text-muted;
+}
+
+.metric-trend {
+  @apply mt-1 flex items-center gap-1 font-mono text-xs;
+}
+
+/* ─── Status Dot ─── */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-dot.active {
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.status-dot.inactive {
+  background: #555;
+}
+
+/* ─── Glass Panel ─── */
+.glass-panel {
+  background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── Data Row ─── */
+.data-row {
+  @apply flex items-center justify-between border-b border-border py-2.5 text-sm;
+}
+
+.data-row:last-child {
+  @apply border-b-0;
+}
+
+.data-row-key {
+  @apply text-muted;
+}
+
+.data-row-value {
+  @apply font-mono text-foreground;
+}
+
+/* ─── Leaflet overrides ─── */
+.leaflet-container {
+  border-radius: 0.5rem;
+}
+
+.dark .leaflet-container {
+  background: #0a0a0a;
+}
+
+.dark .leaflet-control-zoom a {
+  background: #111;
+  color: #ededed;
+  border-color: #1f1f1f;
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background: #1a1a1a;
+}
+
+.dark .leaflet-control-attribution {
+  background: #111;
+  color: #888;
+}
+
+.dark .leaflet-control-attribution a {
+  color: #22c55e;
 }

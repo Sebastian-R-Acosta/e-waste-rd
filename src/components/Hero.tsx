@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, Terminal } from "lucide-react"
 
 export default function Hero() {
   return (
@@ -11,8 +11,28 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-grid" />
       <div className="absolute inset-0 bg-glow" />
+      <div className="absolute inset-0 bg-grid-dense opacity-30" />
+
+      <div className="absolute top-24 left-8 hidden lg:block">
+        <TerminalPanel />
+      </div>
+
+      <div className="absolute bottom-32 right-8 hidden lg:block">
+        <StatusPanel />
+      </div>
 
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 text-center sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6 flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5"
+        >
+          <span className="status-dot active" />
+          <span className="font-mono text-xs text-muted">SISTEMA ACTIVO</span>
+          <span className="ml-1 font-mono text-xs text-muted">v0.1.0</span>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -27,7 +47,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
             Reciclaje Electrónico{" "}
             <span className="bg-gradient-to-r from-accent to-blue-500 bg-clip-text text-transparent">
               Responsable
@@ -35,10 +55,21 @@ export default function Hero() {
           </h1>
         </motion.div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-4 flex items-center gap-2 font-mono text-sm text-muted"
+        >
+          <span className="text-accent">$</span>
+          <span className="typing-text">facilitamos acceso a puntos de recolección — RD</span>
+          <span className="terminal-cursor" />
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg"
         >
           Facilitamos el acceso a puntos de recolección y disposición adecuada de residuos
@@ -53,13 +84,14 @@ export default function Hero() {
         >
           <a
             href="#que-reciclamos"
-            className="rounded-xl bg-accent px-8 py-3.5 text-sm font-semibold text-black transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20"
+            className="group relative rounded-xl bg-accent px-8 py-3.5 text-sm font-semibold text-black transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20"
           >
-            Explorar
+            <span className="relative z-10">Explorar</span>
+            <span className="absolute inset-0 rounded-xl bg-white/10 opacity-0 transition-opacity group-hover:opacity-100" />
           </a>
           <a
             href="#mapa"
-            className="rounded-xl border border-border px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-surface"
+            className="rounded-xl border border-border px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-surface hover:border-accent/30"
           >
             Puntos de Recolección
           </a>
@@ -81,6 +113,87 @@ export default function Hero() {
         </motion.div>
       </motion.a>
     </section>
+  )
+}
+
+function TerminalPanel() {
+  const lines = [
+    { prompt: "$", text: "init e-waste-rd --region=rd" },
+    { prompt: ">", text: "loading puntos de recolección..." },
+    { prompt: "✓", text: "1 punto activo (UNPHU)", accent: true },
+    { prompt: ">", text: "conectando con centros de acopio..." },
+    { prompt: "✓", text: "sistema operativo", accent: true },
+  ]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 1 }}
+      className="w-64 rounded-lg border border-border bg-surface/90 p-4 font-mono text-xs"
+    >
+      <div className="mb-2 flex items-center gap-2 border-b border-border pb-2">
+        <Terminal className="h-3 w-3 text-accent" />
+        <span className="text-muted">terminal — e-waste-rd</span>
+      </div>
+      <div className="space-y-1.5">
+        {lines.map((line, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 + i * 0.3 }}
+            className="flex items-start gap-1.5"
+          >
+            <span className={line.accent ? "text-accent" : "text-muted"}>{line.prompt}</span>
+            <span className={line.accent ? "text-accent" : "text-muted-bright"}>{line.text}</span>
+          </motion.div>
+        ))}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.8 }}
+          className="flex items-center gap-1.5"
+        >
+          <span className="text-accent">$</span>
+          <span className="terminal-cursor" />
+        </motion.div>
+      </div>
+    </motion.div>
+  )
+}
+
+function StatusPanel() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 1.2 }}
+      className="w-56 rounded-lg border border-border bg-surface/90 p-4"
+    >
+      <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
+        <span className="font-mono text-xs text-muted">estado del sistema</span>
+        <span className="status-dot active" />
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-xs text-muted">Servidor</span>
+          <span className="font-mono text-xs text-accent">Operativo</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-xs text-muted">Puntos</span>
+          <span className="font-mono text-xs text-foreground">1 activo</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-xs text-muted">Cobertura</span>
+          <span className="font-mono text-xs text-foreground">Santo Domingo</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="font-mono text-xs text-muted">Latencia</span>
+          <span className="font-mono text-xs text-foreground">12ms</span>
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
@@ -131,7 +244,7 @@ function BatteryAnimation() {
         ))}
       </motion.div>
 
-      <svg width="120" height="180" viewBox="0 0 120 180" className="relative z-10">
+      <svg width="120" height="180" viewBox="0 0 120 180" className="relative z-10 drop-shadow-lg">
         <defs>
           <linearGradient id="batteryFill" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0%" stopColor="#22c55e" />
