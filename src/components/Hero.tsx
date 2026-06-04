@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowDown, Terminal } from "lucide-react"
 
@@ -82,27 +83,24 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
-          <a
-            href="#que-reciclamos"
+          <Link
+            href="/que-reciclamos"
             className="group relative rounded-xl bg-accent px-8 py-3.5 text-sm font-semibold text-black transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20"
           >
             <span className="relative z-10">Explorar</span>
             <span className="absolute inset-0 rounded-xl bg-white/10 opacity-0 transition-opacity group-hover:opacity-100" />
-          </a>
-          <a
-            href="#mapa"
+          </Link>
+          <Link
+            href="/mapa"
             className="rounded-xl border border-border px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-surface hover:border-accent/30"
           >
             Puntos de Recolección
-          </a>
+          </Link>
         </motion.div>
       </div>
 
-      <motion.a
-        href="#que-reciclamos"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+      <Link
+        href="/quienes-somos"
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted transition-colors hover:text-accent"
       >
         <motion.div
@@ -111,7 +109,7 @@ export default function Hero() {
         >
           <ArrowDown className="h-6 w-6" />
         </motion.div>
-      </motion.a>
+      </Link>
     </section>
   )
 }

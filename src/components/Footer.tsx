@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Recycle, Mail, MapPin, Terminal } from "lucide-react"
 
 export default function Footer() {
@@ -28,11 +29,11 @@ export default function Footer() {
           <div>
             <h4 className="mb-4 text-xs font-semibold uppercase tracking-wider text-foreground">Secciones</h4>
             <ul className="space-y-2 text-sm text-muted">
-              <li><a href="#hero" className="transition-colors hover:text-accent">Inicio</a></li>
-              <li><a href="#quienes-somos" className="transition-colors hover:text-accent">Nosotros</a></li>
-              <li><a href="#que-reciclamos" className="transition-colors hover:text-accent">Qué Reciclamos</a></li>
-              <li><a href="#mapa" className="transition-colors hover:text-accent">Puntos de Recolección</a></li>
-              <li><a href="#para-que-sirve" className="transition-colors hover:text-accent">Beneficios</a></li>
+              <li><Link href="/" className="transition-colors hover:text-accent">Inicio</Link></li>
+              <li><Link href="/quienes-somos" className="transition-colors hover:text-accent">Nosotros</Link></li>
+              <li><Link href="/que-reciclamos" className="transition-colors hover:text-accent">Qué Reciclamos</Link></li>
+              <li><Link href="/mapa" className="transition-colors hover:text-accent">Puntos de Recolección</Link></li>
+              <li><Link href="/beneficios" className="transition-colors hover:text-accent">Beneficios</Link></li>
             </ul>
           </div>
 

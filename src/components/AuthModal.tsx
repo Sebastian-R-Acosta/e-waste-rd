@@ -2,35 +2,32 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Recycle, Terminal } from "lucide-react"
+import { X, Recycle } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/components/AuthProvider"
 
-interface AuthModalProps {
-  open: boolean
-  onClose: () => void
-}
-
-export default function AuthModal({ open, onClose }: AuthModalProps) {
+export default function AuthModal() {
+  const { authOpen, setAuthOpen } = useAuth()
   const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!open) return
+    if (!authOpen) return
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") setAuthOpen(false)
     }
     document.addEventListener("keydown", handler)
     return () => document.removeEventListener("keydown", handler)
-  }, [open, onClose])
+  }, [authOpen, setAuthOpen])
 
   return (
     <AnimatePresence>
-      {open && (
+      {authOpen && (
         <motion.div
           ref={overlayRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={(e) => { if (e.target === overlayRef.current) onClose() }}
+          onClick={(e) => { if (e.target === overlayRef.current) setAuthOpen(false) }}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md p-4"
         >
           <motion.div
@@ -46,7 +43,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
                 <span className="text-sm font-semibold text-foreground">e-waste RD</span>
               </div>
               <button
-                onClick={onClose}
+                onClick={() => setAuthOpen(false)}
                 className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition-colors hover:bg-background hover:text-foreground"
               >
                 <X className="h-3.5 w-3.5" />
