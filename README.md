@@ -159,6 +159,12 @@ e-waste-rd/
 - [ ] Educational resources section
 - [ ] Email notifications
 
+## Fixes & Changes
+
+### 2026-06-04
+- **Fix: Device card navigation** — Replaced `motion.div` wrapping `<a>` with direct `motion.a` component in `QueReciclamos.tsx`. This eliminates the wrapper div that was intercepting click events, giving the browser a native `<a>` element for proper navigation. Cards now use Framer Motion's `motion.a` which renders as an `<a>` tag with full animation support and native link behavior.
+- **Fix: Background overlapping clicks** — Added `pointer-events-none` to absolute-positioned background grid and glow divs in `QueReciclamos.tsx` so they don't intercept click events on underlying content.
+
 ### Phase 3 — Corporate
 - [ ] Recycling traceability system
 - [ ] Partnership portal for recyclers
