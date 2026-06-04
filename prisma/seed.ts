@@ -1,7 +1,7 @@
 import { PrismaClient } from "../src/generated/prisma"
 
 const url = `file:${process.cwd().replace(/\\/g, "/")}/prisma/dev.db`
-const prisma = new PrismaClient({ datasources: { db: { url } } })
+const prisma = new PrismaClient({ datasources: { db: { url } } } as any)
 
 const rewards = [
   { name: "10% OFF en Tienda G-Max", description: "Descuento del 10% en dispositivos electrónicos en Tienda G-Max.", type: "discount", cost: 100, partner: "G-Max", discountPercent: 10 },

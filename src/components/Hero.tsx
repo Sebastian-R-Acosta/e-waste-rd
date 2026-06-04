@@ -12,7 +12,10 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-grid" />
       <div className="absolute inset-0 bg-glow" />
+      <div className="absolute inset-0 bg-eco-radial" />
       <div className="absolute inset-0 bg-grid-dense opacity-30" />
+      <div className="eco-particle" /><div className="eco-particle" /><div className="eco-particle" />
+      <div className="eco-particle" /><div className="eco-particle" /><div className="eco-particle" />
 
       <div className="absolute top-24 left-8 hidden lg:block">
         <TerminalPanel />
@@ -50,7 +53,7 @@ export default function Hero() {
         >
           <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
             Reciclaje Electrónico{" "}
-            <span className="bg-gradient-to-r from-accent to-blue-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent via-emerald-400 to-green-500 bg-clip-text text-transparent">
               Responsable
             </span>
           </h1>

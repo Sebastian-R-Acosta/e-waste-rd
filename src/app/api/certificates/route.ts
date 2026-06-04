@@ -14,7 +14,7 @@ export async function GET(req: Request) {
       orderBy: { createdAt: "desc" },
     })
 
-    return NextResponse.json({ certificates })
+    return NextResponse.json(certificates)
   } catch {
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
   }

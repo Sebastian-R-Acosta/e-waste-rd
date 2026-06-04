@@ -13,7 +13,7 @@ model User {
   name      String
   password  String
   points    Int      @default(0)
-  level     String   @default("bronze")
+  level     String   @default("bronce")
   totalKg   Float    @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -30,7 +30,7 @@ model DropOff {
   deviceType String
   weightKg  Float
   pointsAwarded Int  @default(0)
-  status    String   @default("pending")
+  status    String   @default("completed")
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])

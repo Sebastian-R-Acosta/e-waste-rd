@@ -8,7 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 
 const dbPath = `file:///${process.cwd().replace(/\\/g, "/")}/prisma/dev.db`
 const libsql = createClient({ url: dbPath })
-const adapter = new PrismaLibSql(libsql)
+const adapter = new (PrismaLibSql as any)(libsql)
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter })
 

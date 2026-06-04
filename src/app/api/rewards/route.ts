@@ -7,7 +7,7 @@ export async function GET() {
       where: { active: true },
       orderBy: { cost: "asc" },
     })
-    return NextResponse.json({ rewards })
+    return NextResponse.json(rewards)
   } catch {
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 })
   }

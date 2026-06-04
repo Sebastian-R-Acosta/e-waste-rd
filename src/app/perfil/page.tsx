@@ -9,7 +9,7 @@ import {
 import { useAuth } from "@/components/AuthProvider"
 
 interface Stats {
-  points: number; level: number; totalKg: number; co2Saved: number
+  points: number; level: string; totalKg: number; co2Saved: number
   dropOffCount: number; redemptionsCount: number; certificatesCount: number
   memberSince: string; progress: { current: number; next: number; remaining: number; percent: number }
 }
@@ -20,13 +20,13 @@ interface Transaction {
 }
 
 const statCards = [
-  { key: "points", label: "Saldo de Puntos", icon: Coins, format: (v: number) => v.toLocaleString(), suffix: "pts" },
-  { key: "level", label: "Nivel Actual", icon: TrendingUp, format: (v: number) => { const levels = ["", "Bronce", "Plata", "Oro"]; return levels[v] || `Nivel ${v}` }, suffix: "" },
-  { key: "totalKg", label: "Total Reciclado", icon: Recycle, format: (v: number) => v.toFixed(1), suffix: "kg" },
-  { key: "co2Saved", label: "CO₂ Evitado", icon: Cloud, format: (v: number) => v.toFixed(1), suffix: "kg" },
-  { key: "dropOffCount", label: "Entregas", icon: Trash2, format: (v: number) => v.toString(), suffix: "" },
-  { key: "redemptionsCount", label: "Canjeos", icon: Gift, format: (v: number) => v.toString(), suffix: "" },
-  { key: "certificatesCount", label: "Certificados", icon: FileText, format: (v: number) => v.toString(), suffix: "" },
+  { key: "points", label: "Saldo de Puntos", icon: Coins, format: (v: unknown) => (v as number).toLocaleString(), suffix: "pts" },
+  { key: "level", label: "Nivel Actual", icon: TrendingUp, format: (v: unknown) => { const levels: Record<string, string> = { bronce: "Bronce", plata: "Plata", oro: "Oro" }; const s = v as string; return levels[s] || s.charAt(0).toUpperCase() + s.slice(1) }, suffix: "" },
+  { key: "totalKg", label: "Total Reciclado", icon: Recycle, format: (v: unknown) => (v as number).toFixed(1), suffix: "kg" },
+  { key: "co2Saved", label: "CO₂ Evitado", icon: Cloud, format: (v: unknown) => (v as number).toFixed(1), suffix: "kg" },
+  { key: "dropOffCount", label: "Entregas", icon: Trash2, format: (v: unknown) => (v as number).toString(), suffix: "" },
+  { key: "redemptionsCount", label: "Canjeos", icon: Gift, format: (v: unknown) => (v as number).toString(), suffix: "" },
+  { key: "certificatesCount", label: "Certificados", icon: FileText, format: (v: unknown) => (v as number).toString(), suffix: "" },
 ]
 
 const typeLabels: Record<string, { label: string; color: string }> = {

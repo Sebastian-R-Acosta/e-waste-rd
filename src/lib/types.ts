@@ -39,7 +39,7 @@ export interface Certificate {
 
 export interface UserStats {
   points: number
-  level: number
+  level: string
   totalKg: number
   co2Saved: number
   dropOffCount: number

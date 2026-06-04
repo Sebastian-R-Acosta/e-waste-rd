@@ -159,7 +159,7 @@ function LoginForm() {
       </button>
       <p className="text-center text-xs text-muted">
         ¿Olvidaste tu contraseña?{" "}
-        <button className="text-accent hover:underline">Recupérala aquí</button>
+        <button type="button" onClick={() => alert("Próximamente: recuperación de contraseña. Contáctanos en info@ewaste-rd.com")} className="text-accent hover:underline">Recupérala aquí</button>
       </p>
     </motion.form>
   )

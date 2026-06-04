@@ -5,6 +5,7 @@ import { deviceTypes } from "@/lib/device-types"
 
 const items = deviceTypes.map((dt) => ({
   icon: dt.icon,
+  emoji: dt.emoji,
   label: dt.label,
   desc: dt.description,
   count: idx(dt.id),
@@ -23,6 +24,7 @@ function idx(id: string): string {
 export default function QueReciclamos() {
   return (
     <section id="que-reciclamos" className="relative border-t border-border bg-background py-24">
+      <div className="pointer-events-none absolute inset-0 bg-eco-radial" />
       <div className="pointer-events-none absolute inset-0 bg-grid-dense opacity-20" />
       <div className="pointer-events-none absolute inset-0 bg-glow-accent" />
 
@@ -56,15 +58,18 @@ export default function QueReciclamos() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover"
+                className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover hover:shadow-lg hover:shadow-accent/5"
               >
                 <div className="absolute top-0 right-0 p-3 font-mono text-[10px] text-muted">
                   [{item.count}]
                 </div>
 
                 <div className="p-5">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent/20">
-                    <Icon className="h-5 w-5" />
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-all group-hover:bg-accent/20 group-hover:scale-110">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <span className="text-2xl">{item.emoji}</span>
                   </div>
                   <h3 className="mb-1 text-base font-semibold text-foreground">{item.label}</h3>
                   <p className="text-sm text-muted">{item.desc}</p>

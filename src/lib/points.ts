@@ -1,9 +1,14 @@
 const BONUS_BY_TYPE: Record<string, number> = {
-  bateria: 5,
-  baterías: 5,
-  celular: 3,
+  baterias: 5,
   celulares: 3,
-  smartphone: 3,
+  monitores: 4,
+  computadoras: 4,
+  cables: 2,
+  electrodomesticos: 3,
+  impresoras: 3,
+  tablets: 4,
+  televisores: 5,
+  consolas: 3,
 }
 
 export function calculatePoints(deviceType: string, weightKg: number, deliveryCount: number): number {

@@ -38,8 +38,10 @@ export default function DeviceTypePage() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border bg-background py-16">
         <div className="absolute inset-0 bg-grid" />
+        <div className="absolute inset-0 bg-eco-radial" />
         <div className="absolute inset-0 bg-glow-accent" />
         <div className="absolute inset-0 bg-grid-dense opacity-20" />
+        <div className="eco-particle" /><div className="eco-particle" /><div className="eco-particle" />
 
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <Link
@@ -346,8 +348,11 @@ function DeviceAnimation({ device }: { device: DeviceType }) {
         ))}
       </motion.div>
 
-      <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-2xl border border-border bg-surface/80">
-        <Icon className="h-9 w-9 text-accent" />
+      <div className="relative z-10 flex flex-col items-center gap-2">
+        <span className="text-4xl">{device.emoji}</span>
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-surface/80 backdrop-blur-sm">
+          <Icon className="h-7 w-7 text-accent" />
+        </div>
       </div>
     </div>
   )

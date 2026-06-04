@@ -30,6 +30,7 @@ export interface DeviceType {
   id: string
   label: string
   icon: ComponentType<{ className?: string }>
+  emoji: string
   description: string
   longDescription: string
   materials: DeviceMaterial[]
@@ -44,6 +45,7 @@ export const deviceTypes: DeviceType[] = [
     id: "baterias",
     label: "Baterías",
     icon: Battery,
+    emoji: "🔋",
     description: "Litio, níquel-cadmio y alcalinas",
     longDescription:
       "Las baterías contienen metales valiosos y altamente recuperables. Su reciclaje evita la contaminación de suelos y acuíferos por metales pesados, y permite reutilizar materiales críticos para la fabricación de nuevas baterías y sistemas de almacenamiento de energía.",
@@ -72,6 +74,7 @@ export const deviceTypes: DeviceType[] = [
     id: "celulares",
     label: "Celulares",
     icon: Smartphone,
+    emoji: "📱",
     description: "Smartphones, tablets y PDAs",
     longDescription:
       "Los teléfonos móviles contienen metales preciosos en cantidades sorprendentes. Una tonelada de celulares contiene más oro que una tonelada de mineral de oro. El reciclaje de estos dispositivos permite recuperar materiales valiosos y evitar la minería destructiva.",
@@ -100,6 +103,7 @@ export const deviceTypes: DeviceType[] = [
     id: "monitores",
     label: "Monitores",
     icon: Monitor,
+    emoji: "🖥️",
     description: "CRT, LCD, LED y pantallas",
     longDescription:
       "Los monitores y pantallas contienen vidrio de alta calidad, metales y plásticos recuperables. Las pantallas CRT requieren manejo especial por su contenido de plomo, mientras que las LCD/LED ofrecen mayores tasas de reciclaje de materiales valiosos.",
@@ -128,6 +132,7 @@ export const deviceTypes: DeviceType[] = [
     id: "computadoras",
     label: "Computadoras",
     icon: Cpu,
+    emoji: "💻",
     description: "PCs, laptops y servidores",
     longDescription:
       "Las computadoras son una de las fuentes más ricas de materiales reciclables en el mundo electrónico. Cada equipo contiene metales preciosos, tierras raras y componentes que pueden ser reutilizados o transformados en nuevos productos industriales.",
@@ -156,6 +161,7 @@ export const deviceTypes: DeviceType[] = [
     id: "cables",
     label: "Cables",
     icon: Cable,
+    emoji: "🔌",
     description: "Cargadores, USB y conectores",
     longDescription:
       "Los cables y accesorios electrónicos contienen cobre de alta pureza, uno de los materiales más valiosos y demandados para reciclaje. El aislamiento de PVC y otros plásticos también puede ser procesado para nuevos usos industriales.",
@@ -184,6 +190,7 @@ export const deviceTypes: DeviceType[] = [
     id: "electrodomesticos",
     label: "Electrodomésticos",
     icon: Tv,
+    emoji: "🏠",
     description: "Microondas, lavadoras y pequeños",
     longDescription:
       "Los electrodomésticos representan una gran fuente de metales reciclables. Contienen acero, cobre, aluminio y plásticos de ingeniería que pueden ser procesados para fabricar nuevos productos, reduciendo significativamente la demanda de minería.",
@@ -212,6 +219,7 @@ export const deviceTypes: DeviceType[] = [
     id: "impresoras",
     label: "Impresoras",
     icon: Printer,
+    emoji: "🖨️",
     description: "Láser, tinta y multifuncionales",
     longDescription:
       "Las impresoras contienen plásticos de alta calidad, metales y componentes electrónicos recuperables. Los cartuchos de tinta y tóner pueden ser rellenados o reciclados para fabricar nuevos productos, incluyendo filamento para impresión 3D.",
@@ -240,6 +248,7 @@ export const deviceTypes: DeviceType[] = [
     id: "tablets",
     label: "Tablets",
     icon: TabletIcon,
+    emoji: "📲",
     description: "iPad, Android y lectores electrónicos",
     longDescription:
       "Las tablets son dispositivos compactos con una alta concentración de materiales valiosos por unidad de peso. Combina lo mejor del reciclaje de celulares y computadoras, con aluminio de alta calidad, vidrio táctil y metales preciosos en sus circuitos.",
@@ -268,6 +277,7 @@ export const deviceTypes: DeviceType[] = [
     id: "televisores",
     label: "Televisores",
     icon: TvIcon,
+    emoji: "📺",
     description: "LED, OLED, QLED y plasma",
     longDescription:
       "Los televisores modernos contienen una combinación única de vidrio templado, metales y plásticos de ingeniería. A diferencia de los CRT antiguos, los televisores LED/OLED no contienen plomo en el vidrio, facilitando su reciclaje y recuperación de materiales.",
@@ -296,6 +306,7 @@ export const deviceTypes: DeviceType[] = [
     id: "consolas",
     label: "Consolas",
     icon: Gamepad2,
+    emoji: "🎮",
     description: "PlayStation, Xbox, Nintendo y retro",
     longDescription:
       "Las consolas de videojuegos contienen plásticos ABS de alta resistencia, metales y circuitos especializados. Muchas consolas vintage tienen valor de colección, pero aquellas que no pueden ser reacondicionadas ofrecen materiales excelentes para reciclaje.",

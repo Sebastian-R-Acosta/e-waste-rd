@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (!r.ok) throw new Error()
           return r.json()
         })
-        .then((data: { points: number; level: number; memberSince: string }) => {
+        .then((data: { points: number; level: string; memberSince: string }) => {
           setUser((prev) =>
             prev
               ? { ...prev, points: data.points, level: data.level.toString() }

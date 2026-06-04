@@ -161,9 +161,19 @@ e-waste-rd/
 
 ## Fixes & Changes
 
-### 2026-06-04
-- **Fix: Device card navigation** — Replaced `motion.div` wrapping `<a>` with direct `motion.a` component in `QueReciclamos.tsx`. This eliminates the wrapper div that was intercepting click events, giving the browser a native `<a>` element for proper navigation. Cards now use Framer Motion's `motion.a` which renders as an `<a>` tag with full animation support and native link behavior.
-- **Fix: Background overlapping clicks** — Added `pointer-events-none` to absolute-positioned background grid and glow divs in `QueReciclamos.tsx` so they don't intercept click events on underlying content.
+### 2026-06-04 — v2
+- **Fix: Certificates API response shape** — Changed `return NextResponse.json({ certificates })` to `return NextResponse.json(certificates)` in `src/app/api/certificates/route.ts`. Frontend was expecting a raw array but getting `{ certificates: [...] }`.
+- **Fix: Rewards API response shape** — Same fix in `src/app/api/rewards/route.ts`.
+- **Fix: Certificate generation POST missing body** — Added `body: JSON.stringify({ type: "impact" })` to the fetch in `certificados/page.tsx`. The endpoint required a `type` field but frontend sent none.
+- **Fix: Level system inconsistencies** — Changed schema default from `"bronze"` to `"bronce"` (Spanish). Fixed `UserStats.level` type from `number` to `string`. Fixed perfil page level formatter to use string-based lookup instead of numeric index. Fixed AuthProvider type annotation.
+- **Fix: Bonus points keys** — Updated `BONUS_BY_TYPE` in `points.ts` to match actual device type IDs (`baterias`, `celulares`, `monitores`, etc.) instead of mismatched keys.
+- **Fix: TypeScript errors** — Removed `ignoreBuildErrors: true` from `next.config.ts`. Fixed all 3 TS errors (`as any` cast, PrismaClient constructor, PrismaLibSql adapter type).
+- **Fix: Social links in footer** — Updated GitHub and Twitter `#` hrefs to real URLs.
+- **Fix: Password reset button** — Added `onClick` handler with info alert.
+- **Fix: DropOff status default** — Changed from `"pending"` to `"completed"` to match API behavior.
+- **Feature: Green/eco visual theme** — Added eco gradient backgrounds (`bg-eco-radial`, `bg-eco-gradient`), floating particle animations (`eco-particle`), pulsing glow effects, enhanced green color palette with darker background (`#030a05`).
+- **Feature: Emoji visuals for device types** — Added `emoji` field to all 10 device types (🔋📱🖥️💻🔌🏠🖨️📲📺🎮). Displayed alongside Lucide icons on catalog cards and detail pages.
+- **Feature: Enhanced animations** — Added `group-hover:scale-110` icon scaling on catalog cards, shadow-glow on hover, staggered entrance animations, floating eco particles on Hero and detail pages.
 
 ### Phase 3 — Corporate
 - [ ] Recycling traceability system

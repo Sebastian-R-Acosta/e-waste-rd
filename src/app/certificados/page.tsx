@@ -37,7 +37,8 @@ export default function CertificadosPage() {
     try {
       const res = await fetch("/api/certificates/generate", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ type: "impact" }),
       })
       if (res.ok) {
         const cert = await res.json()
