@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { deviceTypes } from "@/lib/device-types"
 
@@ -51,37 +52,40 @@ export default function QueReciclamos() {
           {items.map((item, i) => {
             const Icon = item.icon
             return (
-              <motion.a
+              <motion.div
                 key={item.label}
-                href={item.href}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover hover:shadow-lg hover:shadow-accent/5"
               >
-                <div className="absolute top-0 right-0 p-3 font-mono text-[10px] text-muted">
-                  [{item.count}]
-                </div>
+                <Link
+                  href={item.href}
+                  className="group relative block overflow-hidden rounded-lg border border-border bg-surface transition-all hover:border-accent/30 hover:bg-surface-hover hover:shadow-lg hover:shadow-accent/5"
+                >
+                  <div className="absolute top-0 right-0 p-3 font-mono text-[10px] text-muted">
+                    [{item.count}]
+                  </div>
 
-                <div className="p-5">
-                  <div className="mb-3 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-all group-hover:bg-accent/20 group-hover:scale-110">
-                      <Icon className="h-5 w-5" />
+                  <div className="p-5">
+                    <div className="mb-3 flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-all group-hover:bg-accent/20 group-hover:scale-110">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <span className="text-2xl">{item.emoji}</span>
                     </div>
-                    <span className="text-2xl">{item.emoji}</span>
+                    <h3 className="mb-1 text-base font-semibold text-foreground">{item.label}</h3>
+                    <p className="text-sm text-muted">{item.desc}</p>
                   </div>
-                  <h3 className="mb-1 text-base font-semibold text-foreground">{item.label}</h3>
-                  <p className="text-sm text-muted">{item.desc}</p>
-                </div>
 
-                <div className="border-t border-border px-5 py-2">
-                  <div className="flex items-center gap-2">
-                    <span className="status-dot active" />
-                    <span className="font-mono text-[10px] text-muted">aceptando</span>
+                  <div className="border-t border-border px-5 py-2">
+                    <div className="flex items-center gap-2">
+                      <span className="status-dot active" />
+                      <span className="font-mono text-[10px] text-muted">aceptando</span>
+                    </div>
                   </div>
-                </div>
-              </motion.a>
+                </Link>
+              </motion.div>
             )
           })}
         </div>
